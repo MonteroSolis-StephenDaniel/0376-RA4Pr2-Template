@@ -1,9 +1,4 @@
-
-const MAX_INTENTS = 5;
-
 let codiSecret = [];
-let intentsRestants = MAX_INTENTS;
-let jocAcabat = false;
 
 function generarCodiSecret() {
     const codi = [];
@@ -15,24 +10,23 @@ function generarCodiSecret() {
 
 function validarIntent(intent) {
     const pistes = [];
-    const copiaCodi = [...codiSecret];
+    const copiaCodi   = [...codiSecret];
     const copiaIntent = [...intent];
 
     for (let i = 0; i < 4; i++) {
         if (copiaIntent[i] === copiaCodi[i]) {
             pistes.push({ pos: i, valor: '1' });
-    
-            copiaCodi[i] = null;
+            copiaCodi[i]   = null;
             copiaIntent[i] = null;
         }
     }
-  
+
     for (let i = 0; i < 4; i++) {
-        if (copiaIntent[i] === null) continue; 
-        const indexCodi = copiaCodi.indexOf(copiaIntent[i]);
-        if (indexCodi !== -1) {
+        if (copiaIntent[i] === null) continue;
+        const idx = copiaCodi.indexOf(copiaIntent[i]);
+        if (idx !== -1) {
             pistes.push({ pos: i, valor: 'Ø' });
-            copiaCodi[indexCodi] = null; 
+            copiaCodi[idx] = null;
         } else {
             pistes.push({ pos: i, valor: '×' });
         }
@@ -42,30 +36,21 @@ function validarIntent(intent) {
     return pistes.map(p => p.valor);
 }
 
-function comprovarFinalJoc(pistes) {
+function comprovarFinalJoc(pistes, intentsRestants) {
     const esGuanyador = pistes.every(p => p === '1');
-    if (esGuanyador) return 'guanya';
-    if (intentsRestants <= 0) return 'perd';
-    return 'continua';
-}
 
-function processarIntent(intent) {
-    if (jocAcabat) return null;
-
-    intentsRestants--;
-    const pistes = validarIntent(intent);
-    const estat = comprovarFinalJoc(pistes);
-
-    if (estat === 'guanya' || estat === 'perd') {
-        jocAcabat = true;
+    if (esGuanyador) {
+        logTerminal('CODI CORRECTE! Has guanyat!', 'exit');
+        return true;
     }
 
-    return {
-        pistes,          
-        estat,          
-        intentsRestants, 
-        codiSecret: estat !== 'continua' ? codiSecret : null  revelat al final
-    };
+    if (intentsRestants <= 0) {
+        logTerminal('GAME OVER. El codi secret era: [ ' + codiSecret.join(' | ') + ' ]', 'error');
+        return true;
+    }
+
+    return false;
 }
 
 codiSecret = generarCodiSecret();
+
