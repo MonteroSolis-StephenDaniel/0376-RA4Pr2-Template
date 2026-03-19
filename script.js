@@ -1,8 +1,14 @@
- const MAX_INTENTS = 5;
+// ============================================================
+// FEATURE: feature-ui-logic | Estudiant A
+// Responsabilitat: Terminal, UI i gestió d'esdeveniments
+// ============================================================
+
+const MAX_INTENTS = 5;
 let intentsRestants = MAX_INTENTS;
- 
+
+// --- GENERACIÓ DE SELECTS ---
 const selects = document.querySelectorAll('.code-input');
- 
+
 selects.forEach(select => {
     for (let i = 0; i <= 9; i++) {
         const option = document.createElement('option');
@@ -11,13 +17,13 @@ selects.forEach(select => {
         select.appendChild(option);
     }
 });
- 
 
+// --- FUNCIÓ LOG TERMINAL ---
 function logTerminal(missatge, tipus = 'normal') {
     const terminal = document.getElementById('terminal');
     const linia = document.createElement('p');
     linia.classList.add('line');
- 
+
     if (tipus === 'error') {
         linia.classList.add('error');
         linia.textContent = '> [ERROR] ' + missatge;
@@ -27,39 +33,34 @@ function logTerminal(missatge, tipus = 'normal') {
     } else {
         linia.textContent = '> ' + missatge;
     }
- 
-    terminal.appendChild(linia);
-    terminal.scrollTop = terminal.scrollHeight; // auto-scroll avall
-}
- 
 
+    terminal.appendChild(linia);
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+// --- CONTROL DE RONDES ---
 function actualitzarRondes() {
     intentsRestants--;
     document.getElementById('rondes-restants').textContent = intentsRestants;
 }
 
+// --- GESTOR D'ESDEVENIMENTS ---
 document.getElementById('btn-enviar').addEventListener('click', () => {
- 
 
     const intent = Array.from(selects).map(s => parseInt(s.value));
- 
+
     logTerminal('Intent introduït: [ ' + intent.join(' | ') + ' ]');
- 
 
     const pistes = validarIntent(intent);
- 
 
     logTerminal('Pistes: ' + pistes.join('  '));
- 
- 
+
     if (comprovarFinalJoc(pistes, intentsRestants - 1)) {
         document.getElementById('btn-enviar').disabled = true;
         return;
     }
- 
-  
+
     actualitzarRondes();
- 
 
     if (intentsRestants === 0) {
         logTerminal('GAME OVER. Has esgotat els intents.', 'error');
