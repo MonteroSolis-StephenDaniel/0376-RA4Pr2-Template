@@ -1,12 +1,7 @@
-// ============================================================
-// FEATURE: feature-ui-logic | Estudiant A
-// Responsabilitat: Terminal, UI i gestió d'esdeveniments
-// ============================================================
-
 const MAX_INTENTS = 5;
 let intentsRestants = MAX_INTENTS;
 
-// --- GENERACIÓ DE SELECTS ---
+
 const selects = document.querySelectorAll('.code-input');
 
 selects.forEach(select => {
@@ -18,7 +13,7 @@ selects.forEach(select => {
     }
 });
 
-// --- FUNCIÓ LOG TERMINAL ---
+
 function logTerminal(missatge, tipus = 'normal') {
     const terminal = document.getElementById('terminal');
     const linia = document.createElement('p');
@@ -38,7 +33,7 @@ function logTerminal(missatge, tipus = 'normal') {
     terminal.scrollTop = terminal.scrollHeight;
 }
 
-// --- CONTROL DE RONDES ---
+
 function actualitzarRondes() {
     intentsRestants--;
     document.getElementById('rondes-restants').textContent = intentsRestants;
