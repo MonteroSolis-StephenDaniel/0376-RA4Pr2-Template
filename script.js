@@ -7,7 +7,7 @@ function generarCodiSecret() {
     }
     return codi;
 }
-
+ 
 function validarIntent(intent) {
     const pistes = [];
     const copiaCodi   = [...codiSecret];
